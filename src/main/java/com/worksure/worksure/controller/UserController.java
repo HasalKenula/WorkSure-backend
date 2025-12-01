@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.worksure.worksure.dto.JwtUtils;
+import com.worksure.worksure.dto.UpdateUserRequest;
 import com.worksure.worksure.entity.User;
 import com.worksure.worksure.service.UserService;
 
@@ -19,22 +20,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-     @Autowired
-    private JwtUtils jwtUtils; 
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user){
+    public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-      @GetMapping("/user")
+    @GetMapping("/user")
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String authHeader) {
         try {
             String token = authHeader.replace("Bearer ", "");
             String username = jwtUtils.getUsernameFromToken(token);
 
             User user = userService.getUserByUsername(username);
-            if (user == null) return ResponseEntity.status(404).body("User not found");
+            if (user == null)
+                return ResponseEntity.status(404).body("User not found");
 
             // Hide password
             user.setPassword(null);
@@ -45,4 +47,24 @@ public class UserController {
             return ResponseEntity.status(401).body("Invalid token");
         }
     }
+
+    @PostMapping("/user/update")
+    public ResponseEntity<?> updateUser(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody UpdateUserRequest req) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String username = jwtUtils.getUsernameFromToken(token);
+
+            User updatedUser = userService.updateUser(username, req);
+
+            updatedUser.setPassword(null); // hide password
+
+            return ResponseEntity.ok(updatedUser);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
 }
