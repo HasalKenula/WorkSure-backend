@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +40,10 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Contact> contacts;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Worker workers;
 
     
 }
