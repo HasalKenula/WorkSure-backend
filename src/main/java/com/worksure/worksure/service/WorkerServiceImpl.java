@@ -44,4 +44,10 @@ public class WorkerServiceImpl implements WorkerService {
     public List<Worker> getAllWorkers() {
         return workerRepository.findAll();
     }
+
+    @Override
+    public Worker getWorkerByUserId(Long userId) {
+        return workerRepository.findByUserId(userId).orElse(null);
+    }
+
 }

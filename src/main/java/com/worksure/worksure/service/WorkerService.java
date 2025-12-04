@@ -11,4 +11,6 @@ public interface WorkerService {
     Worker createWorker(Worker worker);
 
     List<Worker> getAllWorkers();
+
+    Worker getWorkerByUserId(Long userId);
 }

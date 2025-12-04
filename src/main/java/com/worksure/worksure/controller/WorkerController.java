@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,6 +99,17 @@ public class WorkerController {
         } catch (Exception e) {
             e.printStackTrace(); 
             return ResponseEntity.status(500).body("Error creating worker: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public  ResponseEntity<Worker> getWorkerByUserId(@PathVariable Long userId){
+        Worker worker=workerService.getWorkerByUserId(userId);
+
+        if(worker==null){
+            return ResponseEntity.status(404).body(null);
+        }else{
+            return ResponseEntity.status(200).body(worker);
         }
     }
 
