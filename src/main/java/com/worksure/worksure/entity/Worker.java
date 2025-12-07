@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.worksure.worksure.dto.JobRole;
 
 import jakarta.persistence.CascadeType;
@@ -47,6 +48,9 @@ public class Worker {
   private LocalTime preferredEndTime;
 
   private String preferredServiceLocation;
+
+  @JsonProperty("isBlocked")
+  private boolean isBlocked;
 
   @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonManagedReference

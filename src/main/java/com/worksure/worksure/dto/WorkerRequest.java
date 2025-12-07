@@ -27,6 +27,8 @@ public class WorkerRequest {
     public LocalTime preferredEndTime;
     public String preferredServiceLocation;
 
+    public boolean isBlocked;
+
     public JobRole jobRole;
     public Long userId;
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class WorkerController {
     private WorkerService workerService;
 
     @Autowired
-    private UserService userService; 
+    private UserService userService;
 
     @GetMapping
     public ResponseEntity<List<Worker>> getAllWorkers() {
@@ -49,7 +50,6 @@ public class WorkerController {
             worker.setAddress(workerRequest.address);
             worker.setJobRole(workerRequest.jobRole);
 
-           
             worker.setMon(workerRequest.mon);
             worker.setTue(workerRequest.tue);
             worker.setWed(workerRequest.wed);
@@ -61,8 +61,9 @@ public class WorkerController {
             worker.setPreferredStartTime(workerRequest.preferredStartTime);
             worker.setPreferredEndTime(workerRequest.preferredEndTime);
             worker.setPreferredServiceLocation(workerRequest.preferredServiceLocation);
+            // worker.setBlocked(workerRequest.isBlocked);
+            worker.setBlocked(workerRequest.isBlocked);
 
-          
             if (workerRequest.userId != null) {
                 User user = userService.getUserById(workerRequest.userId);
                 if (user == null) {
@@ -97,19 +98,43 @@ public class WorkerController {
             Worker savedWorker = workerService.createWorker(worker);
             return ResponseEntity.ok("Worker Created Successfully with ID: " + savedWorker.getId());
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Error creating worker: " + e.getMessage());
         }
     }
 
     @GetMapping("/{userId}")
-    public  ResponseEntity<Worker> getWorkerByUserId(@PathVariable Long userId){
-        Worker worker=workerService.getWorkerByUserId(userId);
+    public ResponseEntity<Worker> getWorkerByUserId(@PathVariable Long userId) {
+        Worker worker = workerService.getWorkerByUserId(userId);
 
-        if(worker==null){
+        if (worker == null) {
             return ResponseEntity.status(404).body(null);
-        }else{
+        } else {
             return ResponseEntity.status(200).body(worker);
+        }
+    }
+
+    @PutMapping("/toggle-block/{workerId}")
+    public ResponseEntity<String> toggleWorkerBlock(@PathVariable String workerId) {
+        Worker worker = workerService.getWorkerById(workerId);
+        if (worker == null) {
+            return ResponseEntity.status(404).body("Worker not found with id: " + workerId);
+        }
+
+        worker.setBlocked(!worker.isBlocked()); // toggle
+        workerService.updateWorker(worker);
+
+        String status = worker.isBlocked() ? "Blocked" : "Approved";
+        return ResponseEntity.ok("Worker " + status + " successfully");
+    }
+
+    @GetMapping("/id/{workerId}")
+    public ResponseEntity<Worker> getWorkerById(@PathVariable String workerId) {
+        Worker worker = workerService.getWorkerById(workerId);
+        if (worker == null) {
+            return ResponseEntity.status(404).body(null);
+        } else {
+            return ResponseEntity.ok(worker);
         }
     }
 

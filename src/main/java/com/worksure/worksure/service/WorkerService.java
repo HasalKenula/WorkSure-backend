@@ -13,4 +13,8 @@ public interface WorkerService {
     List<Worker> getAllWorkers();
 
     Worker getWorkerByUserId(Long userId);
+
+    Worker getWorkerById(String workerId);
+
+    Worker updateWorker(Worker worker);
 }

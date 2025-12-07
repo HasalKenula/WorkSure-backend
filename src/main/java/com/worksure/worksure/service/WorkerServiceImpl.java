@@ -50,4 +50,16 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.findByUserId(userId).orElse(null);
     }
 
+    @Override
+    public Worker getWorkerById(String workerId) {
+        return workerRepository.findById(workerId).orElse(null);
+    }
+
+    @Override
+    public Worker updateWorker(Worker worker) {
+        return workerRepository.save(worker);
+    }
+
+   
+
 }
