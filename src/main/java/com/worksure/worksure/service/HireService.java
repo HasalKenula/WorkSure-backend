@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 
 import com.worksure.worksure.entity.Hire;
 
-
 @Service
 public interface HireService {
     Hire createHire(Hire hire);
 
     List<Hire> getAllHire();
-List<Hire> getHireByWorkerId(String workerId);
 
+    List<Hire> getHireByWorkerId(String workerId);
+
+    Hire getHireById(Long id);
+
+    Hire updateHire(Hire hire);
 
 }

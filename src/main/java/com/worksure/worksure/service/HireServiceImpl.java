@@ -10,25 +10,33 @@ import com.worksure.worksure.entity.Hire;
 import com.worksure.worksure.repository.HireRepository;
 
 @Service
-public class HireServiceImpl implements HireService{
+public class HireServiceImpl implements HireService {
     @Autowired
     private HireRepository hireRepository;
 
     @Override
-    public Hire createHire(Hire hire){
-       return hireRepository.save(hire);  
+    public Hire createHire(Hire hire) {
+        return hireRepository.save(hire);
     }
 
     @Override
-    public List<Hire> getAllHire(){
+    public List<Hire> getAllHire() {
         return hireRepository.findAll();
     }
 
     @Override
-public List<Hire> getHireByWorkerId(String workerId) {
-    return hireRepository.findByWorker_Id(workerId);
-}
+    public List<Hire> getHireByWorkerId(String workerId) {
+        return hireRepository.findByWorker_Id(workerId);
+    }
 
- 
+    @Override
+    public Hire getHireById(Long id) {
+        return hireRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Hire updateHire(Hire hire) {
+        return hireRepository.save(hire);
+    }
 
 }
