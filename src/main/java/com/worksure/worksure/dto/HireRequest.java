@@ -15,7 +15,8 @@ public class HireRequest {
 
     public String description;
 
-   
-    
-    public String workerId; 
+    public boolean isBooked;
+
+    public String workerId;
+    public Long userId;
 }

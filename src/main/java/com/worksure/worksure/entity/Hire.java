@@ -3,7 +3,7 @@ package com.worksure.worksure.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +32,14 @@ public class Hire {
 
     private String description;
 
-   
+    @JsonProperty("isBooked")
+    private boolean isBooked;
+
     @ManyToOne
-    @JoinColumn(name="workerId")
+    @JoinColumn(name = "workerId")
     private Worker worker;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 }

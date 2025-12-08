@@ -45,5 +45,9 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Worker workers;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Hire> hires;
+
     
 }

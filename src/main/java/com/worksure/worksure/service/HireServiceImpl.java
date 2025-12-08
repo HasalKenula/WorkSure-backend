@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksure.worksure.entity.Hire;
+
 import com.worksure.worksure.repository.HireRepository;
 
 @Service
@@ -23,6 +24,11 @@ public class HireServiceImpl implements HireService{
         return hireRepository.findAll();
     }
 
+    @Override
+public List<Hire> getHireByWorkerId(String workerId) {
+    return hireRepository.findByWorker_Id(workerId);
+}
 
+ 
 
 }
