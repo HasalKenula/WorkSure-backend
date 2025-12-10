@@ -9,5 +9,8 @@ import com.worksure.worksure.entity.Contact;
 @Service
 public interface ContactService {
     Contact createContact(Contact contact);
+
     List<Contact> getAllContacts();
+
+    void deleteContact(Long id);
 }

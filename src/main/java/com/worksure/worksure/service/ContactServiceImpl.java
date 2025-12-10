@@ -8,19 +8,23 @@ import org.springframework.stereotype.Service;
 import com.worksure.worksure.entity.Contact;
 import com.worksure.worksure.repository.ContactRepository;
 
-
 @Service
-public class ContactServiceImpl implements ContactService{
+public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
-    
+
     @Override
-    public Contact createContact(Contact contact){
+    public Contact createContact(Contact contact) {
         return contactRepository.save(contact);
     }
 
     @Override
-    public  List<Contact> getAllContacts(){
+    public List<Contact> getAllContacts() {
         return contactRepository.findAll();
+    }
+
+    @Override
+    public void deleteContact(Long id) {
+        contactRepository.deleteById(id);
     }
 }
