@@ -16,6 +16,7 @@ public class HireRequest {
     public String description;
 
     public boolean isBooked;
+    public boolean isPending;
 
     public String workerId;
     public Long userId;

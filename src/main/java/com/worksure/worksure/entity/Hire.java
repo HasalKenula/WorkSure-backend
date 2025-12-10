@@ -35,6 +35,9 @@ public class Hire {
     @JsonProperty("isBooked")
     private boolean isBooked;
 
+    @JsonProperty("isPending")
+    private boolean isPending;
+
     @ManyToOne
     @JoinColumn(name = "workerId")
     private Worker worker;

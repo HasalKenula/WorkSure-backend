@@ -37,6 +37,7 @@ public class HireController {
         hire.setBookingTime(hireRequest.bookingTime);
         hire.setDescription(hireRequest.description);
         hire.setBooked(hireRequest.isBooked);
+        hire.setPending(hireRequest.isPending);
         hire.setWorker(workerService.getWorkerById(hireRequest.getWorkerId()));
         hire.setUser(userService.getUserById(hireRequest.getUserId()));
         Hire hireData = hireService.createHire(hire);
@@ -73,6 +74,21 @@ public class HireController {
         hireService.updateHire(hire);
 
         String status = hire.isBooked() ? "Blocked" : "Approved";
+        return ResponseEntity.ok("Hire " + status + " successfully");
+    }
+
+     @PutMapping("/hire/toggle-pending/{hireId}")
+    public ResponseEntity<String> toggleHirePending(@PathVariable Long hireId) {
+        Hire hire = hireService.getHireById(hireId);
+
+        if (hire == null) {
+            return ResponseEntity.status(404).body("Hire not found with id: " + hireId);
+        }
+
+        hire.setPending(!hire.isPending()); // toggle value
+        hireService.updateHire(hire);
+
+        String status = hire.isPending() ? "Pending" : "Seen";
         return ResponseEntity.ok("Hire " + status + " successfully");
     }
 
