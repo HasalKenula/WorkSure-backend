@@ -17,4 +17,6 @@ public interface WorkerService {
     Worker getWorkerById(String workerId);
 
     Worker updateWorker(Worker worker);
+
+    List<Worker> search(String keywords);
 }
