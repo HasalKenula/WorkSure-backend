@@ -15,4 +15,6 @@ public interface WorkerRepository extends JpaRepository<Worker, String> {
     List<Worker> findAllByOrderByIdDesc();
 
     Optional<Worker> findByUserId(Long userId);
+
+    List<Worker> findByNameContainingIgnoreCaseOrLocationContainingIgnoreCase(String name, String location);
 }
