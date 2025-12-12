@@ -62,7 +62,7 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public List<Worker> search(String keywords) {
-        return workerRepository.findByNameContainingIgnoreCaseOrLocationContainingIgnoreCase(keywords, keywords);
+        return workerRepository.findByFullNameContainingIgnoreCaseOrPreferredServiceLocationContainingIgnoreCase(keywords, keywords);
     }
 
 
