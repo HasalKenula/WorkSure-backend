@@ -131,9 +131,14 @@ public class WorkerController {
         }
     }
 
-    @GetMapping("/search")
+    @GetMapping("/searchbyname")
     public List<Worker> search(@RequestParam String keyword){
         return workerService.search(keyword);
+    }
+
+    @GetMapping("/searchbyloc")
+    public List<Worker> searchByLoc(@RequestParam String keyword){
+        return workerService.searchByLocation(keyword);
     }
 
 }
