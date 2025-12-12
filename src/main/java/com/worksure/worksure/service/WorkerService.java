@@ -19,4 +19,6 @@ public interface WorkerService {
     Worker updateWorker(Worker worker);
 
     List<Worker> search(String keywords);
+
+    List<Worker> searchByLocation(String keyword);
 }
