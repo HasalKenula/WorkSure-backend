@@ -2,6 +2,7 @@ package com.worksure.worksure.service;
 
 import java.util.List;
 
+import com.worksure.worksure.dto.JobRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,9 +67,24 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> searchByLocation(String keyword) {
-        return workerRepository.findByPreferredServiceLocationContainingIgnoreCase(keyword);
+    public List<Worker> searchByLocAndSkill(String location, JobRole jobRole) {
+
+        if (location != null && location.trim().isEmpty()) {
+            location = null;
+        }
+
+        return workerRepository.searchByLocAndSkill(location, jobRole);
     }
+
+//    @Override
+//    public List<Worker> searchByLocation(String keyword) {
+//        return workerRepository.findByPreferredServiceLocationContainingIgnoreCase(keyword);
+//    }
+
+//    @Override
+//    public List<Worker> searchBySkill(JobRole keyword) {
+//        return workerRepository.findByJobRole(keyword);
+//    }
 
 
 }
