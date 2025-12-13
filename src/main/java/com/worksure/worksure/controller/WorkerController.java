@@ -2,6 +2,7 @@ package com.worksure.worksure.controller;
 
 import java.util.List;
 
+import com.worksure.worksure.dto.JobRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -132,13 +133,25 @@ public class WorkerController {
     }
 
     @GetMapping("/searchbyname")
-    public List<Worker> search(@RequestParam String keyword){
+    public List<Worker> searchByName(@RequestParam String keyword){
         return workerService.search(keyword);
     }
 
-    @GetMapping("/searchbyloc")
-    public List<Worker> searchByLoc(@RequestParam String keyword){
-        return workerService.searchByLocation(keyword);
-    }
+//    @GetMapping("/searchbyloc")
+//    public List<Worker> searchByLoc(@RequestParam String keyword){
+//        return workerService.searchByLocation(keyword);
+//    }
+//
+//    @GetMapping("/searchbyskill")
+//    public List<Worker> searchBySkill(@RequestParam JobRole keyword){
+//        return workerService.searchBySkill(keyword);
+//    }
 
+    @GetMapping("/searchbylocandskill")
+    public  List<Worker> searchByLocAndSkill(
+            @RequestParam(required = false)String location,
+            @RequestParam(required = false) JobRole jobRole
+    ){
+        return workerService.searchByLocAndSkill(location, jobRole);
+    }
 }
