@@ -38,8 +38,11 @@ public class HireController {
         hire.setDescription(hireRequest.description);
         hire.setBooked(hireRequest.isBooked);
         hire.setPending(hireRequest.isPending);
+        hire.setOngoing(hireRequest.isOngoing);
+        hire.setComplete(hireRequest.isComplete);
         hire.setWorker(workerService.getWorkerById(hireRequest.getWorkerId()));
         hire.setUser(userService.getUserById(hireRequest.getUserId()));
+
         Hire hireData = hireService.createHire(hire);
         return ResponseEntity.status(200).body(hireData);
     }
@@ -77,7 +80,7 @@ public class HireController {
         return ResponseEntity.ok("Hire " + status + " successfully");
     }
 
-     @PutMapping("/hire/toggle-pending/{hireId}")
+    @PutMapping("/hire/toggle-pending/{hireId}")
     public ResponseEntity<String> toggleHirePending(@PathVariable Long hireId) {
         Hire hire = hireService.getHireById(hireId);
 
@@ -89,6 +92,36 @@ public class HireController {
         hireService.updateHire(hire);
 
         String status = hire.isPending() ? "Pending" : "Seen";
+        return ResponseEntity.ok("Hire " + status + " successfully");
+    }
+
+    @PutMapping("/hire/toggle-ongoging/{hireId}")
+    public ResponseEntity<String> toggleHireOngoing(@PathVariable Long hireId) {
+        Hire hire = hireService.getHireById(hireId);
+
+        if (hire == null) {
+            return ResponseEntity.status(404).body("Hire not found with id: " + hireId);
+        }
+
+        hire.setOngoing(!hire.isOngoing()); // toggle value
+        hireService.updateHire(hire);
+
+        String status = hire.isOngoing() ? "Ongoing" : "False";
+        return ResponseEntity.ok("Hire " + status + " successfully");
+    }
+
+    @PutMapping("/hire/toggle-complete/{hireId}")
+    public ResponseEntity<String> toggleHireComplete(@PathVariable Long hireId) {
+        Hire hire = hireService.getHireById(hireId);
+
+        if (hire == null) {
+            return ResponseEntity.status(404).body("Hire not found with id: " + hireId);
+        }
+
+        hire.setComplete(!hire.isComplete()); // toggle value
+        hireService.updateHire(hire);
+
+        String status = hire.isComplete() ? "Complete" : "False";
         return ResponseEntity.ok("Hire " + status + " successfully");
     }
 

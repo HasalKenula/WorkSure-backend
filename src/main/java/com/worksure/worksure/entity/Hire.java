@@ -38,6 +38,12 @@ public class Hire {
     @JsonProperty("isPending")
     private boolean isPending;
 
+    @JsonProperty("isOngoing")
+    private boolean isOngoing;
+
+    @JsonProperty("isComplete")
+    private boolean isComplete;
+
     @ManyToOne
     @JoinColumn(name = "workerId")
     private Worker worker;

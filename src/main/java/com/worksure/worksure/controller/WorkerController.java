@@ -61,6 +61,7 @@ public class WorkerController {
             worker.setPreferredStartTime(workerRequest.preferredStartTime);
             worker.setPreferredEndTime(workerRequest.preferredEndTime);
             worker.setPreferredServiceLocation(workerRequest.preferredServiceLocation);
+            worker.setPdfUrl(workerRequest.pdfUrl);
             // worker.setBlocked(workerRequest.isBlocked);
             worker.setBlocked(workerRequest.isBlocked);
 

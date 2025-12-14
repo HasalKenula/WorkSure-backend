@@ -49,7 +49,7 @@ public class Worker {
   private LocalTime preferredEndTime;
 
   private String preferredServiceLocation;
-
+  private String pdfUrl;
   @JsonProperty("isBlocked")
   private boolean isBlocked;
 

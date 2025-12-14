@@ -26,7 +26,7 @@ public class WorkerRequest {
     public LocalTime preferredStartTime;
     public LocalTime preferredEndTime;
     public String preferredServiceLocation;
-
+    public String pdfUrl;
     public boolean isBlocked;
 
     public JobRole jobRole;
