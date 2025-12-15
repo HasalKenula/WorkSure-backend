@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.worksure.worksure.dto.JobRole;
+
+import com.worksure.worksure.dto.JobRoleCountDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +37,15 @@ public interface WorkerRepository extends JpaRepository<Worker, String> {
             @Param("location") String location,
             @Param("jobRole") JobRole jobRole
     );
+
+    @Query("""
+    SELECT new com.worksure.worksure.dto.JobRoleCountDTO(w.jobRole, COUNT(w))
+    FROM Worker w
+    WHERE w.isBlocked = false
+    GROUP BY w.jobRole
+    """)
+    List<JobRoleCountDTO> countWorkersByJobRole();
+
+
+
 }
