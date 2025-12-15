@@ -2,14 +2,11 @@ package com.worksure.worksure.controller;
 
 import java.util.List;
 
-import com.worksure.worksure.dto.JobRole;
+import com.worksure.worksure.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.worksure.worksure.dto.CertificateRequest;
-import com.worksure.worksure.dto.JobExperienceRequest;
-import com.worksure.worksure.dto.WorkerRequest;
 import com.worksure.worksure.entity.Certificate;
 import com.worksure.worksure.entity.JobExperience;
 import com.worksure.worksure.entity.User;
@@ -143,8 +140,8 @@ public class WorkerController {
 //    }
 //
 //    @GetMapping("/searchbyskill")
-//    public List<Worker> searchBySkill(@RequestParam JobRole keyword){
-//        return workerService.searchBySkill(keyword);
+//    public List<Worker> searchBySkill(@RequestParam JobRole skill){
+//        return workerService.searchBySkill(skill);
 //    }
 
     @GetMapping("/searchbylocandskill")
@@ -154,4 +151,12 @@ public class WorkerController {
     ){
         return workerService.searchByLocAndSkill(location, jobRole);
     }
+
+    @GetMapping("/job-roles")
+    public List<JobRoleCountDTO> getJobRolesWithCount() {
+        return workerService.getWorkerCountByJobRole();
+    }
+
+
+
 }
