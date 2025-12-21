@@ -135,16 +135,6 @@ public class WorkerController {
         return workerService.search(keyword);
     }
 
-//    @GetMapping("/searchbyloc")
-//    public List<Worker> searchByLoc(@RequestParam String keyword){
-//        return workerService.searchByLocation(keyword);
-//    }
-//
-//    @GetMapping("/searchbyskill")
-//    public List<Worker> searchBySkill(@RequestParam JobRole skill){
-//        return workerService.searchBySkill(skill);
-//    }
-
     @GetMapping("/searchbylocandskill")
     public  List<Worker> searchByLocAndSkill(
             @RequestParam(required = false)String location,
@@ -157,7 +147,5 @@ public class WorkerController {
     public List<JobRoleCountDTO> getJobRolesWithCount() {
         return workerService.getWorkerCountByJobRole();
     }
-
-
 
 }

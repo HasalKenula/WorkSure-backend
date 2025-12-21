@@ -2,6 +2,7 @@ package com.worksure.worksure.service;
 
 import java.util.List;
 
+
 import com.worksure.worksure.dto.JobRole;
 
 import com.worksure.worksure.dto.JobRoleCountDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksure.worksure.dto.WorkerIdGenerator;
+
 import com.worksure.worksure.entity.Certificate;
 import com.worksure.worksure.entity.JobExperience;
 import com.worksure.worksure.entity.Worker;
@@ -83,16 +85,6 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.countWorkersByJobRole();
     }
 
-
-//    @Override
-//    public List<Worker> searchByLocation(String keyword) {
-//        return workerRepository.findByPreferredServiceLocationContainingIgnoreCase(keyword);
-//    }
-
-//    @Override
-//    public List<Worker> searchBySkill(JobRole keyword) {
-//        return workerRepository.findByJobRole(keyword);
-//    }
-
+   
 
 }

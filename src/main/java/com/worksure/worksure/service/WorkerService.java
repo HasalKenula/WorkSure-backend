@@ -22,12 +22,10 @@ public interface WorkerService {
 
     List<Worker> search(String keywords);
 
-    //List<Worker> searchByLocation(String keyword);
-
-    //List<Worker> searchBySkill(JobRole keyword);
-
     List<Worker> searchByLocAndSkill(String location, JobRole skill);
 
     List<JobRoleCountDTO> getWorkerCountByJobRole();
+
+   
 
 }
