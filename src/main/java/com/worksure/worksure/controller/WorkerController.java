@@ -131,21 +131,84 @@ public class WorkerController {
     }
 
     @GetMapping("/searchbyname")
-    public List<Worker> searchByName(@RequestParam String keyword){
+    public List<Worker> searchByName(@RequestParam String keyword) {
         return workerService.search(keyword);
     }
 
     @GetMapping("/searchbylocandskill")
-    public  List<Worker> searchByLocAndSkill(
-            @RequestParam(required = false)String location,
-            @RequestParam(required = false) JobRole jobRole
-    ){
+    public List<Worker> searchByLocAndSkill(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) JobRole jobRole) {
         return workerService.searchByLocAndSkill(location, jobRole);
     }
 
     @GetMapping("/job-roles")
     public List<JobRoleCountDTO> getJobRolesWithCount() {
         return workerService.getWorkerCountByJobRole();
+    }
+
+    @PutMapping("/{workerId}")
+    public ResponseEntity<Worker> updateWorker(
+            @RequestBody WorkerRequest workerRequest,
+            @PathVariable String workerId) {
+
+        try {
+            Worker existingWorker = workerService.getWorkerById(workerId);
+
+            if (existingWorker == null) {
+                return ResponseEntity.status(404).body(null);
+            }
+
+            existingWorker.setFullName(workerRequest.fullName);
+            existingWorker.setEmail(workerRequest.email);
+            existingWorker.setPhoneNumber(workerRequest.phoneNumber);
+            existingWorker.setNic(workerRequest.nic);
+            existingWorker.setAddress(workerRequest.address);
+            existingWorker.setJobRole(workerRequest.jobRole);
+
+            existingWorker.setMon(workerRequest.mon);
+            existingWorker.setTue(workerRequest.tue);
+            existingWorker.setWed(workerRequest.wed);
+            existingWorker.setThu(workerRequest.thu);
+            existingWorker.setFri(workerRequest.fri);
+            existingWorker.setSat(workerRequest.sat);
+            existingWorker.setSun(workerRequest.sun);
+
+            existingWorker.setPreferredStartTime(workerRequest.preferredStartTime);
+            existingWorker.setPreferredEndTime(workerRequest.preferredEndTime);
+            existingWorker.setPreferredServiceLocation(workerRequest.preferredServiceLocation);
+            existingWorker.setPdfUrl(workerRequest.pdfUrl);
+
+            existingWorker.getCertificates().clear();
+            if (workerRequest.certificates != null) {
+                for (CertificateRequest cReq : workerRequest.certificates) {
+                    Certificate certificate = new Certificate();
+                    certificate.setCertificateName(cReq.certificateName);
+                    certificate.setIssuingBody(cReq.issuingBody);
+                    certificate.setWorker(existingWorker);
+                    existingWorker.getCertificates().add(certificate);
+                }
+            }
+
+            existingWorker.getJobExperiences().clear();
+            if (workerRequest.jobExperiences != null) {
+                for (JobExperienceRequest jReq : workerRequest.jobExperiences) {
+                    JobExperience jobExp = new JobExperience();
+                    jobExp.setCompanyName(jReq.companyName);
+                    jobExp.setJobTitle(jReq.jobTitle);
+                    jobExp.setYears(jReq.years);
+                    jobExp.setWorker(existingWorker);
+                    existingWorker.getJobExperiences().add(jobExp);
+                }
+            }
+
+            Worker updatedWorker = workerService.updateWorkerById(workerId, existingWorker);
+            return ResponseEntity.ok(updatedWorker);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(null);
+        }
     }
 
 }

@@ -26,6 +26,6 @@ public interface WorkerService {
 
     List<JobRoleCountDTO> getWorkerCountByJobRole();
 
-   
+    Worker updateWorkerById(String workerId, Worker worker);
 
 }

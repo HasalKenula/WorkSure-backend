@@ -2,7 +2,6 @@ package com.worksure.worksure.service;
 
 import java.util.List;
 
-
 import com.worksure.worksure.dto.JobRole;
 
 import com.worksure.worksure.dto.JobRoleCountDTO;
@@ -85,6 +84,14 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.countWorkersByJobRole();
     }
 
-   
+    @Override
+    public Worker updateWorkerById(String workerId, Worker worker) {
+
+        if (!workerRepository.existsById(workerId)) {
+            return null;
+        }
+
+        return workerRepository.save(worker);
+    }
 
 }
