@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksure.worksure.dto.WorkerIdGenerator;
+
 import com.worksure.worksure.entity.Certificate;
 import com.worksure.worksure.entity.JobExperience;
 import com.worksure.worksure.entity.Worker;
@@ -83,16 +84,14 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.countWorkersByJobRole();
     }
 
+    @Override
+    public Worker updateWorkerById(String workerId, Worker worker) {
 
-//    @Override
-//    public List<Worker> searchByLocation(String keyword) {
-//        return workerRepository.findByPreferredServiceLocationContainingIgnoreCase(keyword);
-//    }
+        if (!workerRepository.existsById(workerId)) {
+            return null;
+        }
 
-//    @Override
-//    public List<Worker> searchBySkill(JobRole keyword) {
-//        return workerRepository.findByJobRole(keyword);
-//    }
-
+        return workerRepository.save(worker);
+    }
 
 }

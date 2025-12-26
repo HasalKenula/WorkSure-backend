@@ -1,5 +1,7 @@
 package com.worksure.worksure.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +29,11 @@ public class UserController {
     @PostMapping("/user")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
+    }
+
+    @GetMapping("/user/count")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/user")
@@ -74,4 +81,5 @@ public class UserController {
 
         return ResponseEntity.status(200).body(user);
     }
+
 }
