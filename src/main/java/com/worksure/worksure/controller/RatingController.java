@@ -2,6 +2,7 @@ package com.worksure.worksure.controller;
 
 
 import com.worksure.worksure.entity.Rating;
+import com.worksure.worksure.repository.RatingRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
