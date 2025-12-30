@@ -161,7 +161,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/user").permitAll()  
+                        .requestMatchers("/user").permitAll()
+                        .requestMatchers("/rating/**").permitAll()
                         // .requestMatchers("/worker/**").permitAll() 
                         .anyRequest().authenticated()
                 );
