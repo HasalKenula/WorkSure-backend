@@ -50,4 +50,8 @@ public class User {
     private List<Hire> hires;
 
     
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Payment payment;
+    
 }
