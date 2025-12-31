@@ -44,9 +44,25 @@ public class PaymentController {
             payment.setUser(user);
             Payment savePayment = paymentService.createPayment(payment);
             return ResponseEntity.status(200).body(savePayment);
-           
+
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getPaymentbyUserId(@PathVariable Long userId) {
+        try {
+            Payment paymentDetail=paymentService.getPaymentbyUserId(userId);
+
+            if(paymentDetail==null){
+                 return ResponseEntity.status(404).body(null);
+            }else{
+                return ResponseEntity.status(200).body(paymentDetail);
+            }
+        } catch (Exception e) {
+           return ResponseEntity.status(500).body("error");
+        }
+    }
+
 }

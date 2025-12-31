@@ -23,5 +23,9 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findAll();
     }
 
+    @Override
+    public Payment getPaymentbyUserId(Long userId){
+        return paymentRepository.findByUserId(userId).orElse(null);
+    }
    
 }
