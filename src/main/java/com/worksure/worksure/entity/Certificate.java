@@ -15,15 +15,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Certificate {
-     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String certificateName;
-    private String issuingBody;
+  private String certificateName;
+  private String issuingBody;
 
-    @ManyToOne
-    @JoinColumn(name = "worker_id")
-      @JsonBackReference
-    private Worker worker;
+  @ManyToOne
+  @JoinColumn(name = "worker_id")
+  @JsonBackReference
+  private Worker worker;
 }

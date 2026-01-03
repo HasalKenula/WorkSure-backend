@@ -49,9 +49,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Hire> hires;
 
-    
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private Payment payment;
-    
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<BankDetails> bankDetails;
+
 }
