@@ -11,6 +11,6 @@ import com.worksure.worksure.entity.Hire;
 
 @Repository
 public interface HireRepository extends JpaRepository<Hire, Long> {
- 
-       List<Hire> findByWorker_Id(String workerId);
+
+    List<Hire> findByWorker_Id(String workerId);
 }
