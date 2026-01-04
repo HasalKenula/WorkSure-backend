@@ -3,6 +3,7 @@ package com.worksure.worksure.controller;
 import com.worksure.worksure.dto.ChatRequest;
 import com.worksure.worksure.dto.ChatResponse;
 import com.worksure.worksure.service.ChatService;
+import com.worksure.worksure.service.ChatSessionStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,27 +13,18 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
 
     private final ChatService chatService;
+    private final ChatSessionStore sessionStore;
 
     @Value("${chatbot.system-prompt}")
     private String systemPrompt;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, ChatSessionStore sessionStore) {
         this.chatService = chatService;
+        this.sessionStore = sessionStore;
     }
 
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequest request) {
-
-        if (!isDentalQuestion(request.getMessage())) {
-            return new ChatResponse(
-                    "I can help only with WorkSure services 😊\n" +
-                            "You can ask things like:\n" +
-                            "• Finding a plumber or electrician\n" +
-                            "• Service prices or working hours\n" +
-                            "• How booking works\n" +
-                            "• Home repair and maintenance help 🔧"
-            );
-        }
 
         String reply = chatService.generateReply(
                 systemPrompt,
@@ -42,19 +34,11 @@ public class ChatController {
         return new ChatResponse(reply);
     }
 
-    private boolean isDentalQuestion(String msg) {
-        String text = msg.toLowerCase();
-
-        // Allow greetings
-        if (text.matches(".*\\b(hi|hello|hey|good morning|good evening)\\b.*")) {
-            return true;
-        }
-
-        return text.matches(
-                ".*(plumber|plumbing|electrician|electric|carpenter|painter|painting|" +
-                        "repair|fix|install|service|worker|technician|home|house|job|" +
-                        "price|cost|charge|hour|available|booking|appointment|near me).*"
-        );
+    @PostMapping("/reset")
+    public void resetChat() {
+        System.out.println("🔥 Chat session reset");
+        sessionStore.clearSession("default");
     }
+
 
 }
