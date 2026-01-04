@@ -46,6 +46,13 @@ public interface WorkerRepository extends JpaRepository<Worker, String> {
     """)
     List<JobRoleCountDTO> countWorkersByJobRole();
 
+    //find workers according to their job roles.
+    List<Worker> findByJobRole(JobRole jobRole);
 
+    //filter workers according to their location
+    List<Worker> findByJobRoleAndPreferredServiceLocationIgnoreCase(
+            JobRole jobRole,
+            String preferredServiceLocation
+    );
 
 }
