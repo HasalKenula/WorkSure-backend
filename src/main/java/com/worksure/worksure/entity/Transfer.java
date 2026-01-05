@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,20 +17,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
-
+@NoArgsConstructor
+public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String address;
-    private String email;
+    private String transactionId;
+    private String paymentMethod;
+    private String fullName;
     private double amount;
-    public String planName;
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -38,8 +35,12 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "workerId")
+    private Worker worker;
 
 }
