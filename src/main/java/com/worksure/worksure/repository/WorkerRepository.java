@@ -22,9 +22,6 @@ public interface WorkerRepository extends JpaRepository<Worker, String> {
 
     List<Worker> findByFullNameContainingIgnoreCase(String fullName);
 
-    //List<Worker> findByPreferredServiceLocationContainingIgnoreCase(String preferredServiceLocation);
-
-    //List<Worker> findByJobRole(JobRole jobRole);
 
     @Query("""
         SELECT w FROM Worker w

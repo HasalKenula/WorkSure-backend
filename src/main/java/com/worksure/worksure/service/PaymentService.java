@@ -11,4 +11,6 @@ public interface PaymentService {
     Payment createPayment(Payment payment);
 
     List<Payment> getAllPayments();
+
+    Payment getPaymentbyUserId(Long userId);
 }
