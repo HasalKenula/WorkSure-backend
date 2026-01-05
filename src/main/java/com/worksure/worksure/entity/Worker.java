@@ -1,5 +1,6 @@
 package com.worksure.worksure.entity;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -36,6 +38,10 @@ public class Worker {
   private String nic;
 
   private String address;
+
+  @CreationTimestamp
+  @Column
+  private LocalDateTime createdAt;
 
   private boolean mon;
   private boolean tue;
