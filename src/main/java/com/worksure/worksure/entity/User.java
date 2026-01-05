@@ -1,5 +1,6 @@
 package com.worksure.worksure.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -36,6 +38,11 @@ public class User {
     private String password;
 
     private String imageUrl;
+
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
