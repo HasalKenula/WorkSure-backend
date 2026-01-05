@@ -76,4 +76,8 @@ public class Worker {
   @OneToMany(mappedBy = "worker")
   private List<BankDetails> bankDetails;
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "worker")
+  private List<Transfer> transfers;
+
 }

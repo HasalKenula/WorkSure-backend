@@ -57,4 +57,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<BankDetails> bankDetails;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Transfer> transfers;
+
 }

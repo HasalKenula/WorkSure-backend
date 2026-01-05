@@ -9,5 +9,8 @@ import com.worksure.worksure.entity.BankDetails;
 @Service
 public interface BankDetailsService {
     BankDetails createBankDetails(BankDetails bankDetails);
+
     List<BankDetails> getBankDetails();
+
+    List<BankDetails> getBankByUserId(Long userId);
 }
