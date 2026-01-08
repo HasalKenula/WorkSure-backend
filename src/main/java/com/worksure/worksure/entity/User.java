@@ -68,4 +68,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Transfer> transfers;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
+
 }
