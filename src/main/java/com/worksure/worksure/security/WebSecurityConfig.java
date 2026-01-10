@@ -165,6 +165,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/contact").permitAll()
+                        //.requestMatchers("/rating").permitAll()
                         //.requestMatchers("/worker/**").permitAll()
 
                         // .requestMatchers("/worker/**").permitAll() 
