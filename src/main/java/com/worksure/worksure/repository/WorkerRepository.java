@@ -44,5 +44,12 @@ public interface WorkerRepository extends JpaRepository<Worker, String> {
     List<JobRoleCountDTO> countWorkersByJobRole();
 
 
+    @Query("""
+    SELECT MONTH(w.createdAt), COUNT(w)
+    FROM Worker w
+    GROUP BY MONTH(w.createdAt)
+    ORDER BY MONTH(w.createdAt)
+    """)
+    List<Object[]> countWorkersByMonth();
 
 }
