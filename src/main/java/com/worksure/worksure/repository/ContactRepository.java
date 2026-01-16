@@ -7,5 +7,5 @@ import com.worksure.worksure.entity.Contact;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    
+
 }
