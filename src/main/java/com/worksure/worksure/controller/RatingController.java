@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/rating")
 @CrossOrigin(origins = "http://localhost:5173")
-public class RatingController {
+public class
+RatingController {
 
     @Autowired
     private RatingService service;
@@ -28,5 +30,10 @@ public class RatingController {
         map.put("ratings", service.getRatingsForWorker(workerId));
         map.put("average", service.getAverageRating(workerId));
         return map;
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Rating> getRatingsByUser(@PathVariable Long userId) {
+        return service.getRatingsByUser(userId);
     }
 }

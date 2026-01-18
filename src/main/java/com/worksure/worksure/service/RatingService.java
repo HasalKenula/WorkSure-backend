@@ -42,4 +42,9 @@ public class RatingService {
         List<Rating> ratings = ratingRepo.findByWorkerId(workerId);
         return ratings.stream().mapToInt(Rating::getRating).average().orElse(0.0);
     }
+
+    /* ================= GET RATINGS BY USER ================= */
+    public List<Rating> getRatingsByUser(Long userId) {
+        return ratingRepo.findByUserId(userId);
+    }
 }
