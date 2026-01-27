@@ -164,8 +164,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/user").permitAll()  
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/about").permitAll()
-                        .requestMatchers("/contact").permitAll() 
-                              
+                        .requestMatchers("/contact").permitAll()
+                        //.requestMatchers("/rating").permitAll()
+                        //.requestMatchers("/worker/**").permitAll()
+
                         // .requestMatchers("/worker/**").permitAll() 
                         .anyRequest().authenticated()
                 );
