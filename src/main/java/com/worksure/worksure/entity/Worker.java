@@ -86,4 +86,8 @@ public class Worker {
   @OneToMany(mappedBy = "worker")
   private List<Transfer> transfers;
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "worker")
+  private List<Rating> ratings;
+
 }
