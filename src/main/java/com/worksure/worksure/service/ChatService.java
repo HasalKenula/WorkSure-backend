@@ -39,19 +39,21 @@ public class ChatService {
 
     public String generateReply(String systemPrompt, String userMessage) {
 
+        ChatSession session = sessionStore.getSession("default");
 
+        // 1️⃣ Handle thanks
         if (intentResolver.isThanks(userMessage)) {
             return "You’re welcome 😊";
         }
 
-        ChatSession session = sessionStore.getSession("default");
-
-
+        // 2️⃣ Detect job role anytime
         JobRole detectedRole = intentResolver.detectJobRole(userMessage);
-
         if (detectedRole != null) {
             session.setJobRole(detectedRole);
             session.setWaitingForLocation(true);
+            session.setWaitingForOtherAreaConfirmation(false);
+            session.setDbResultsShown(false);
+            session.setNoWorkersFound(false);
             session.setLastWorker(null);
 
             return "Please tell me your location so I can find a "
@@ -59,36 +61,113 @@ public class ChatService {
                     + " near you 😊";
         }
 
-        /* 2️⃣ Waiting for location → FETCH FROM DB */
-        if (session.isWaitingForLocation() && session.getJobRole() != null) {
+        // 🛑 3️⃣ User typed something without selecting a job role
+        if (session.getJobRole() == null) {
+            return "Please select a job type first 😊\n\n"
+                    + "You can choose one of these:\n"
+                    + "🔧 Plumber\n"
+                    + "⚡ Electrician\n"
+                    + "🪚 Carpenter\n"
+                    + "🎨 Painter";
+        }
 
-            String location = (userMessage == null || userMessage.trim().isEmpty())
-                    ? null
-                    : userMessage.trim();
+        // 4️⃣ YES after DB results shown
+        if (session.isDbResultsShown()
+                && "yes".equalsIgnoreCase(userMessage)) {
 
+            session.setWaitingForLocation(true);
+            session.setDbResultsShown(false);
+            session.setWaitingForOtherAreaConfirmation(false);
+            session.setNoWorkersFound(false);
+            session.setLastWorker(null);
+
+            return "Great 😊 Please enter another location.";
+        }
+
+        // 5️⃣ NO after DB results shown
+        if (session.isDbResultsShown()
+                && "no".equalsIgnoreCase(userMessage)) {
+
+            session.setJobRole(null);
+            session.setDbResultsShown(false);
+            session.setLastWorker(null);
+
+            return "Okay 😊 If you need another service, just tell me the job type.";
+        }
+
+        // 6️⃣ User types location directly after results shown
+        if (session.isDbResultsShown()
+                && !"yes".equalsIgnoreCase(userMessage)
+                && !"no".equalsIgnoreCase(userMessage)) {
+
+            session.setWaitingForLocation(true);
+            session.setDbResultsShown(false);
+
+            return generateReply(systemPrompt, userMessage);
+        }
+
+        // 7️⃣ Waiting for location → DB search
+        if (session.isWaitingForLocation()) {
+
+            String location = userMessage == null ? null : userMessage.trim();
             JobRole jobRole = session.getJobRole();
-
 
             List<Worker> workers =
                     workerRepo.searchByLocAndSkill(location, jobRole);
 
-
+            // ❌ No workers found
             if (workers.isEmpty()) {
-                workers = workerRepo.searchByLocAndSkill(null, jobRole);
-            }
-
-            if (!workers.isEmpty()) {
                 session.setWaitingForLocation(false);
-                session.setLastWorker(workers.get(0));
-                return buildDbContext(workers, jobRole);
+                session.setWaitingForOtherAreaConfirmation(true);
+                session.setNoWorkersFound(true);
+
+                return "Sorry 😔 We couldn’t find any "
+                        + jobRole.name().toLowerCase()
+                        + "s in " + location + ".\n\n"
+                        + "Would you like me to check other areas for available "
+                        + jobRole.name().toLowerCase()
+                        + "s? (yes / no)";
             }
 
-            return "Sorry 😔 We don’t have any "
-                    + jobRole.name().toLowerCase()
-                    + "s registered at the moment.";
+            // ✅ Workers found
+            session.setWaitingForLocation(false);
+            session.setDbResultsShown(true);
+            session.setNoWorkersFound(false);
+            session.setLastWorker(workers.get(0));
+
+            return buildDbContext(workers, jobRole);
         }
 
+        // 8️⃣ YES / NO when no workers found
+        if (session.isWaitingForOtherAreaConfirmation()) {
 
+            if ("yes".equalsIgnoreCase(userMessage)) {
+
+                List<Worker> allWorkers =
+                        workerRepo.searchByLocAndSkill(null, session.getJobRole());
+
+                session.setWaitingForOtherAreaConfirmation(false);
+                session.setDbResultsShown(true);
+                session.setNoWorkersFound(false);
+
+                if (allWorkers.isEmpty()) {
+                    return "Sorry 😔 No workers are available at the moment.";
+                }
+
+                return buildDbContext(allWorkers, session.getJobRole());
+            }
+
+            if ("no".equalsIgnoreCase(userMessage)) {
+                session.setWaitingForOtherAreaConfirmation(false);
+                session.setWaitingForLocation(true);
+
+                return "Okay 😊 Please enter another location.";
+            }
+
+            return "Please reply with **yes** or **no** 😊";
+        }
+
+        // 9️⃣ Clarification about last worker
         if (intentResolver.isClarificationQuestion(userMessage)
                 && session.getLastWorker() != null) {
 
@@ -100,7 +179,7 @@ public class ChatService {
                     + ". Would you like me to check another area?";
         }
 
-
+        // 🔟 Safe fallback (never breaks UI)
         return chatClient.prompt()
                 .system(systemPrompt)
                 .user(userMessage)
@@ -108,6 +187,7 @@ public class ChatService {
                 .content();
     }
 
+    // ================= DB RESULT FORMATTER =================
 
     private String buildDbContext(List<Worker> workers, JobRole jobRole) {
 
