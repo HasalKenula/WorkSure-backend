@@ -11,6 +11,5 @@ import com.worksure.worksure.entity.Payment;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-
    Optional<Payment> findByUserId(Long userId);
 }
