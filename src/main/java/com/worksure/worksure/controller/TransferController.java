@@ -58,4 +58,10 @@ public class TransferController {
         }
     }
 
+    @GetMapping("/transfe/{workerId}")
+    public ResponseEntity<List<Transfer>> getTransferByWorkerId(@PathVariable String workerId) {
+        List<Transfer> allTransfers = transferService.getTransferByWorkerId(workerId);
+        return ResponseEntity.status(200).body(allTransfers);
+    }
+
 }
