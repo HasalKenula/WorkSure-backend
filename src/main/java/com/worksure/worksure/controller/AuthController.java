@@ -1,5 +1,8 @@
 package com.worksure.worksure.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,12 +30,16 @@ public class AuthController {
     private JwtUtils jwtUtils;
 
     @PostMapping("/auth/login")
-    public String login(@RequestBody User user){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+    public Map<String, String> login(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwtToken = jwtUtils.generateJwtToken(authentication);
 
-        String jwtToken =jwtUtils.generateJwtToken(authentication);
-        return jwtToken;
+        Map<String, String> response = new HashMap<>();
+        response.put("token", jwtToken);
+        response.put("username", user.getUsername());
+        return response;
     }
 }
