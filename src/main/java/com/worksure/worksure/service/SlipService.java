@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import com.worksure.worksure.entity.Slip;
 
 
-
 @Service
 public interface SlipService {
-    Slip createSlip(Slip slip);
+    Slip createSlip(Slip slip);  
 }
