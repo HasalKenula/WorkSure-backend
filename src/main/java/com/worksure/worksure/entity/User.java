@@ -72,4 +72,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Hire> slip;
+
 }
