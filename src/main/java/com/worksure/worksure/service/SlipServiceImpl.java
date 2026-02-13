@@ -23,4 +23,9 @@ public class SlipServiceImpl implements SlipService {
     public List<Slip> getSlipByWorkerId(String workerId) {
         return slipRepository.findByWorkerId(workerId);
     }
+
+    @Override
+    public List<Slip> getAllSlip() {
+        return slipRepository.findAll();
+    }
 }
