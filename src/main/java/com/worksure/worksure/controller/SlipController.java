@@ -59,4 +59,10 @@ public class SlipController {
         return ResponseEntity.status(200).body(allSlips);
     }
 
+    @GetMapping("/slip")
+    public ResponseEntity<List<Slip>> getAllSlip() {
+        List<Slip> allSlips = slipService.getAllSlip();
+        return ResponseEntity.status(200).body(allSlips);
+    }
+
 }
