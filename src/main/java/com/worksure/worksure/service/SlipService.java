@@ -11,4 +11,6 @@ public interface SlipService {
     Slip createSlip(Slip slip);
 
     List<Slip> getSlipByWorkerId(String workerId);
+
+    List<Slip> getAllSlip();
 }
