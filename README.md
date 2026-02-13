@@ -96,10 +96,9 @@ spring.ai.openai.api-key=YOUR_OPENAI_API_KEY_HERE
 ```bash
 # Clone frontend repository
 git clone https://github.com/HasalKenula/WorkSure-frontend.git
-cd WorkSure-Mobile-App
+cd WorkSure-frontend
 # Install dependencies
 npm install
-# Start Expo development server
 npm run dev
 
 # Clone backend repository
