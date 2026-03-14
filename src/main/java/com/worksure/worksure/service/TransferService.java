@@ -10,4 +10,5 @@ import com.worksure.worksure.entity.Transfer;
 public interface TransferService {
     List<Transfer> getAllTransfer();
     Transfer createTransfer(Transfer transfer);
+    List<Transfer> getTransferByWorkerId(String workerId);
 }

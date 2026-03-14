@@ -90,4 +90,8 @@ public class Worker {
   @OneToMany(mappedBy = "worker")
   private List<Rating> ratings;
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "worker")
+  private List<Hire> slip;
+
 }

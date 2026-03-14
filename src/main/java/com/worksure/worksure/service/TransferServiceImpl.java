@@ -9,17 +9,22 @@ import com.worksure.worksure.entity.Transfer;
 import com.worksure.worksure.repository.TransferRepository;
 
 @Service
-public class TransferServiceImpl implements TransferService{
+public class TransferServiceImpl implements TransferService {
     @Autowired
     private TransferRepository transferRepository;
 
     @Override
-    public List<Transfer> getAllTransfer(){
+    public List<Transfer> getAllTransfer() {
         return transferRepository.findAll();
     }
 
     @Override
-    public Transfer createTransfer(Transfer transfer){
+    public Transfer createTransfer(Transfer transfer) {
         return transferRepository.save(transfer);
+    }
+
+    @Override
+    public List<Transfer> getTransferByWorkerId(String workerId) {
+        return transferRepository.findByWorkerId(workerId);
     }
 }
