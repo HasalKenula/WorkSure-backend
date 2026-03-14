@@ -41,12 +41,12 @@ public class ChatService {
 
         ChatSession session = sessionStore.getSession("default");
 
-        // 1️⃣ Handle thanks
+        // 1️ Handle thanks
         if (intentResolver.isThanks(userMessage)) {
             return "You’re welcome 😊";
         }
 
-        // 2️⃣ Detect job role anytime
+        // 2Detect job role anytime
         JobRole detectedRole = intentResolver.detectJobRole(userMessage);
         if (detectedRole != null) {
             session.setJobRole(detectedRole);
@@ -61,17 +61,25 @@ public class ChatService {
                     + " near you 😊";
         }
 
-        // 🛑 3️⃣ User typed something without selecting a job role
+        //  User typed something without selecting a job role
         if (session.getJobRole() == null) {
             return "Please select a job type first 😊\n\n"
-                    + "You can choose one of these:\n"
-                    + "🔧 Plumber\n"
+                    + "You can choose one of these services:\n"
                     + "⚡ Electrician\n"
+                    + "🔧 Plumber\n"
                     + "🪚 Carpenter\n"
-                    + "🎨 Painter";
+                    + "🎨 Painter\n"
+                    + "🧱 Mason\n"
+                    + "🔥 Welder\n"
+                    + "🌬 HVAC\n"
+                    + "🌿 Landscaper\n"
+                    + "🏗 Contractor\n"
+                    + "🧹 Cleaner\n"
+                    + "🔧 Equipment Repair\n"
+                    + "⚙ General Services";
         }
 
-        // 4️⃣ YES after DB results shown
+        //  YES after DB results shown
         if (session.isDbResultsShown()
                 && "yes".equalsIgnoreCase(userMessage)) {
 
@@ -84,10 +92,9 @@ public class ChatService {
             return "Great 😊 Please enter another location.";
         }
 
-        // 5️⃣ NO after DB results shown
+        //  NO after DB results shown
         if (session.isDbResultsShown()
                 && "no".equalsIgnoreCase(userMessage)) {
-
             session.setJobRole(null);
             session.setDbResultsShown(false);
             session.setLastWorker(null);
