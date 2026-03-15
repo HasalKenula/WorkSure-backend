@@ -11,7 +11,18 @@ import java.util.UUID;
 @RequestMapping("/api/email")
 @CrossOrigin("*")
 public class EmailController {
+    @Autowired
     private final EmailService emailService;
+
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public EmailController(EmailService emailService){
         this.emailService = emailService;
@@ -25,6 +36,12 @@ public class EmailController {
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam String email){
+        User user = userRepository.findByEmail(email);
+
+        if(user == null){
+            return "Email not found";
+        }
+
         String token = UUID.randomUUID().toString();
         String resetLink = "http://localhost:8081/reset-password?token=" + token;
         emailService.sendResetEmail(email,resetLink);
