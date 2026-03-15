@@ -1,10 +1,18 @@
 package com.worksure.worksure.controller;
 
 import com.worksure.worksure.dto.EmailRequest;
+import com.worksure.worksure.dto.ResetPasswordRequest;
+import com.worksure.worksure.entity.PasswordResetToken;
+import com.worksure.worksure.entity.User;
+import com.worksure.worksure.repository.PasswordResetTokenRepository;
+import com.worksure.worksure.repository.UserRepository;
 import com.worksure.worksure.service.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
