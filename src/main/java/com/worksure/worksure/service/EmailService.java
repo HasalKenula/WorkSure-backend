@@ -21,4 +21,12 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendResetEmail(String toEmail, String resetLink ){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Password Reset Request");
+        message.setText("Click the link below to reset your password:\n" + resetLink);
+        mailSender.send(message);
+    }
 }
