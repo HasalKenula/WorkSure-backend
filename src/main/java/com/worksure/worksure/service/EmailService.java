@@ -29,4 +29,5 @@ public class EmailService {
         message.setText("Click the link below to reset your password:\n" + resetLink);
         mailSender.send(message);
     }
+
 }
