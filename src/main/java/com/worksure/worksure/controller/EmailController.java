@@ -43,8 +43,41 @@ public class EmailController {
         }
 
         String token = UUID.randomUUID().toString();
-        String resetLink = "http://localhost:8081/reset-password?token=" + token;
-        emailService.sendResetEmail(email,resetLink);
+
+        // Delete any existing token for this user
+        tokenRepository.deleteByUserId(user.getId());
+
+        PasswordResetToken resetToken = new PasswordResetToken();
+        resetToken.setToken(token);
+        resetToken.setUser(user);
+        resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(30));
+
+        tokenRepository.save(resetToken);
+
+        String resetLink = "http://localhost:5173/reset-password?token=" + token;
+        emailService.sendResetEmail(user.getEmail(),resetLink);
         return "Reset password link sent to your email";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestBody ResetPasswordRequest request){
+        PasswordResetToken resetToken = tokenRepository.findByToken(request.getToken());
+
+        if(resetToken == null){
+            return "Invalid token";
+        }
+
+        if(resetToken.getExpiryDate().isBefore(LocalDateTime.now())){
+            return "Token expired";
+        }
+
+        User user = resetToken.getUser();
+
+        // Encode the password before saving
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
+
+
+        return "Password updated successfully";
     }
 }
