@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.worksure.worksure.dto.JobRole;
 import com.worksure.worksure.dto.JobRoleCountDTO;
+import com.worksure.worksure.dto.WorkerRatingDTO;
 import org.springframework.stereotype.Service;
 
 import com.worksure.worksure.entity.Worker;
@@ -22,10 +23,12 @@ public interface WorkerService {
 
     List<Worker> search(String keywords);
 
-    List<Worker> searchByLocAndSkill(String location, JobRole skill);
+    List<Worker> searchByLocAndSkill(String location, JobRole skill, String sort);
 
     List<JobRoleCountDTO> getWorkerCountByJobRole();
 
     Worker updateWorkerById(String workerId, Worker worker);
+
+    List<WorkerRatingDTO> getWorkersSortedByRating(String order);
 
 }

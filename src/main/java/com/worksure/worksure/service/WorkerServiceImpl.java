@@ -5,6 +5,8 @@ import java.util.List;
 import com.worksure.worksure.dto.JobRole;
 
 import com.worksure.worksure.dto.JobRoleCountDTO;
+import com.worksure.worksure.dto.WorkerRatingDTO;
+import com.worksure.worksure.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Autowired
     private WorkerIdGenerator workerIdGenerator;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Override
     public Worker createWorker(Worker worker) {
@@ -42,6 +47,19 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         return workerRepository.save(worker);
+    }
+
+    private double getAvgRating(Worker worker) {
+
+        if(worker.getRatings() == null || worker.getRatings().isEmpty()){
+            return 0;
+        }
+
+        return worker.getRatings()
+                .stream()
+                .mapToInt(r -> r.getRating())
+                .average()
+                .orElse(0);
     }
 
     @Override
@@ -70,13 +88,25 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> searchByLocAndSkill(String location, JobRole jobRole) {
+    public List<Worker> searchByLocAndSkill(String location, JobRole jobRole, String sort) {
 
-        if (location != null && location.trim().isEmpty()) {
-            location = null;
+//        if (location != null && location.trim().isEmpty()) {
+//            location = null;
+//        }
+//
+//        return workerRepository.searchByLocAndSkill(location, jobRole);
+
+        List<Worker> workers = workerRepository.searchByLocAndSkill(location, jobRole);
+
+        if ("high".equalsIgnoreCase(sort)) {
+            workers.sort((a, b) -> Double.compare(getAvgRating(b), getAvgRating(a)));
         }
 
-        return workerRepository.searchByLocAndSkill(location, jobRole);
+        if ("low".equalsIgnoreCase(sort)) {
+            workers.sort((a, b) -> Double.compare(getAvgRating(a), getAvgRating(b)));
+        }
+
+        return workers;
     }
 
     @Override
@@ -92,6 +122,17 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         return workerRepository.save(worker);
+    }
+
+    @Override
+    public List<WorkerRatingDTO> getWorkersSortedByRating(String order) {
+
+        if(order.equals("high")){
+            return ratingRepository.findWorkersOrderByRatingDesc();
+        }
+        else{
+            return ratingRepository.findWorkersOrderByRatingAsc();
+        }
     }
 
 }
