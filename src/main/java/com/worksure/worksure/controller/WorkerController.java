@@ -138,8 +138,9 @@ public class WorkerController {
     @GetMapping("/searchbylocandskill")
     public List<Worker> searchByLocAndSkill(
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) JobRole jobRole) {
-        return workerService.searchByLocAndSkill(location, jobRole);
+            @RequestParam(required = false) JobRole jobRole,
+            @RequestParam(required = false) String sort) {
+        return workerService.searchByLocAndSkill(location, jobRole, sort);
     }
 
     @GetMapping("/job-roles")
@@ -209,6 +210,12 @@ public class WorkerController {
             e.printStackTrace();
             return ResponseEntity.status(400).body(null);
         }
+    }
+
+    @GetMapping("/sort-by-rating")
+    public ResponseEntity<List<WorkerRatingDTO>> sortWorkersByRating(@RequestParam String order){
+
+        return ResponseEntity.ok(workerService.getWorkersSortedByRating(order));
     }
 
 }
