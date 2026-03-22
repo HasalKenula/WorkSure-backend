@@ -20,6 +20,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        // CHECK USERNAME
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("Username already exists");
+        }
+
+        // CHECK EMAIL
+        if(userRepository.existsByEmail(user.getEmail())){
+            throw new RuntimeException("Email already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
