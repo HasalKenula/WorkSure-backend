@@ -26,9 +26,20 @@ public class UserController {
     @Autowired
     private JwtUtils jwtUtils;
 
+//    @PostMapping("/user")
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
+
     @PostMapping("/user")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<?> createUser(@RequestBody User user){
+        try{
+            User savedUser = userService.createUser(user);
+            return ResponseEntity.ok(savedUser);
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/user/count")
