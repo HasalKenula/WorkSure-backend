@@ -1,0 +1,103 @@
+# version: "3.8"
+
+# services:
+
+#   app:
+#     build: .
+#     container_name: worksure_app
+#     ports:
+#       - "8081:8081"
+#     depends_on:
+#       - mysql
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/worksure
+#       SPRING_DATASOURCE_USERNAME: root
+#       SPRING_DATASOURCE_PASSWORD: hasal1234
+#       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+#       SPRING_PROFILES_ACTIVE: docker
+
+#   mysql:
+#     image: mysql:8
+#     container_name: worksure_mysql
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: hasal1234
+#       MYSQL_DATABASE: worksure
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+
+# volumes:
+#   mysql_data:
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: worksure-mysql
+    environment:
+      MYSQL_DATABASE: worksure
+      MYSQL_ROOT_PASSWORD: hasal1234
+    ports:
+      - "3307:3306" # Changed to 3307 to avoid conflict with local MySQL
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - worksure-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: worksure-app
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/worksure
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: hasal1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_SECRET: 4/pH9Gl7YRJVrZoPovUNRgE3LS/3Ns1EgQcN+S98yPI9VAXUIUVk/eX5/ZlKoLB3
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: mail.worksure@gmail.com
+      SPRING_MAIL_PASSWORD: lkggbrnjlvbdcwwe
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+      SPRING_AI_OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL: gpt-4.1-mini
+      CHATBOT_SYSTEM_PROMPT: "You are WorkSure Assistant, an AI assistant for a service marketplace platform called WorkSure. Your primary responsibility is to answer users using information retrieved from the WorkSure database when available. If database context is provided, you MUST base your response only on that data. If required information (such as service type or location) is missing, politely ask the user to clarify. You help users find and understand services provided on the WorkSure platform. Recognized service categories include electrician, plumber, carpenter, painter, mason, welder, HVAC technician, landscaper, contractor, cleaner, equipment repair, and general services. You may explain services, pricing estimates, working hours, safety tips, and booking steps related to WorkSure. If the question is outside the scope of WorkSure or home services, politely refuse and guide the user back to supported topics. Do NOT answer questions about programming, movies, politics, exams, history, or unrelated general knowledge. Never claim guarantees or legal responsibility. Encourage users to use the WorkSure platform to contact verified workers. Respond in the same language as the user (English or Sinhala). Keep responses short, clear, friendly, and helpful."
+    volumes:
+      - app-logs:/app/logs # Volume for application logs
+      - ./app-data:/app/data # Bind mount for application data (if needed)
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - worksure-network
+    restart: unless-stopped
+
+# Define volumes
+volumes:
+  mysql-data:
+    name: worksure-mysql-data
+    driver: local
+    # Optional: Specify driver options
+    # driver_opts:
+    #   type: none
+    #   device: /path/on/host
+    #   o: bind
+
+  app-logs:
+    name: worksure-app-logs
+    driver: local
+
+networks:
+  worksure-network:
+    name: worksure-network
+    driver: bridge
