@@ -1,6 +1,5 @@
 package com.worksure.worksure.entity;
 
-import com.worksure.worksure.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,7 +15,7 @@ public class PasswordResetToken {
     private LocalDateTime expiryDate;
 
     @OneToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Long getId() {
