@@ -51,7 +51,7 @@ public class WorkerServiceImpl implements WorkerService {
 
     private double getAvgRating(Worker worker) {
 
-        if(worker.getRatings() == null || worker.getRatings().isEmpty()){
+        if (worker.getRatings() == null || worker.getRatings().isEmpty()) {
             return 0;
         }
 
@@ -90,12 +90,6 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<Worker> searchByLocAndSkill(String location, JobRole jobRole, String sort) {
 
-//        if (location != null && location.trim().isEmpty()) {
-//            location = null;
-//        }
-//
-//        return workerRepository.searchByLocAndSkill(location, jobRole);
-
         List<Worker> workers = workerRepository.searchByLocAndSkill(location, jobRole);
 
         if ("high".equalsIgnoreCase(sort)) {
@@ -127,10 +121,9 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<WorkerRatingDTO> getWorkersSortedByRating(String order) {
 
-        if(order.equals("high")){
+        if (order.equals("high")) {
             return ratingRepository.findWorkersOrderByRatingDesc();
-        }
-        else{
+        } else {
             return ratingRepository.findWorkersOrderByRatingAsc();
         }
     }
